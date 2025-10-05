@@ -13,8 +13,5 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "@meos/clean-architecture": "workspace:*"
-  }
+  "description": ""
 }

@@ -1,24 +1,27 @@
+import { DOCK_DAPP } from "@/constants/application.constant";
 import { useLayoutDock } from "@/shared/hooks";
-import React, { useState } from "react";
-import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { closestCenter, DndContext, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import {
   arrayMove,
+  horizontalListSortingStrategy,
   SortableContext,
   useSortable,
-  horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@meos/launcher-components";
-
-const apps = [
-  { id: "finder", icon: "/application/Safari.png" },
-  { id: "bitmap", icon: "/application/Safari.png" },
-  { id: "safari", icon: "/application/Safari.png" },
-  { id: "message", icon: "/application/Safari.png" },
-];
-
+import React, { useState } from "react";
 // 1. Wrapper cho từng item
-function DockItem({ id, icon }: { id: string; icon: string }) {
+function DockItem({
+  id,
+  icon,
+  name,
+  isOpen,
+}: {
+  id: string;
+  icon: string;
+  name: string;
+  isOpen?: boolean;
+}) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id,
   });
@@ -34,23 +37,32 @@ function DockItem({ id, icon }: { id: string; icon: string }) {
       style={style}
       {...attributes}
       {...listeners}
-      className={`flex flex-col items-center justify-center cursor-pointer ${
-        isDragging ? "scale-110 z-50" : ""
-      }`}
+      className={`flex flex-col items-center justify-center ${isDragging ? "z-50" : ""}`}
     >
       <div className="size-13 rounded-2xl overflow-hidden">
         <img src={icon} alt={id} className="w-full h-full" />
       </div>
       <span
-        className={cn("size-1 bg-white rounded-full block mt-1", isDragging ? "hidden" : "block")}
+        className={cn(
+          "size-1 bg-white rounded-full block mt-1",
+          isOpen ? "opacity-100" : "opacity-0",
+          isDragging ? "opacity-0" : "",
+        )}
       ></span>
     </div>
   );
 }
 const DockLauncher = () => {
   const { heightDockMain, heightDockContainer } = useLayoutDock();
-  const [items, setItems] = useState(apps.map((a) => a.id));
-  const sensors = useSensors(useSensor(PointerSensor));
+  const [items, setItems] = useState(DOCK_DAPP.map((a) => a.id));
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 200,
+        tolerance: 5,
+      },
+    }),
+  );
   return (
     <React.Fragment>
       <div
@@ -60,7 +72,7 @@ const DockLauncher = () => {
         }}
       >
         <div
-          className="bg-[#4A4A4A]/40 backdrop-blur-2xl rounded-2xl px-1 flex-row shadow overflow-visible flex items-center"
+          className="bg-[#4A4A4A]/40 backdrop-blur-2xl rounded-2xl px-1 flex-row shadow overflow-visible"
           style={{ height: `${heightDockMain}px`, border: "1px solid rgba(255,255,255,0.1)" }}
         >
           <DndContext
@@ -79,10 +91,25 @@ const DockLauncher = () => {
           >
             <SortableContext items={items} strategy={horizontalListSortingStrategy}>
               {items.map((id) => {
-                const app = apps.find((a) => a.id === id)!;
-                return <DockItem key={app.id} id={app.id} icon={app.icon} />;
+                const app = DOCK_DAPP.find((a) => a.id === id)!;
+                if (app.name === "Trash") return;
+                return <DockItem key={app.id} id={app.id} icon={app.logo} name={app.name} />;
               })}
             </SortableContext>
+            <div className="px-3 h-full justify-center">
+              <span className="w-[1px] h-[80%] bg-white/50"></span>
+            </div>
+            <DockItem
+              id={DOCK_DAPP[DOCK_DAPP.length - 1].id}
+              icon={DOCK_DAPP[DOCK_DAPP.length - 1].logo}
+              name={DOCK_DAPP[DOCK_DAPP.length - 1].name}
+              isOpen
+            />
+            <DockItem
+              id={DOCK_DAPP[DOCK_DAPP.length - 1].id}
+              icon={DOCK_DAPP[DOCK_DAPP.length - 1].logo}
+              name={DOCK_DAPP[DOCK_DAPP.length - 1].name}
+            />
           </DndContext>
         </div>
       </div>
