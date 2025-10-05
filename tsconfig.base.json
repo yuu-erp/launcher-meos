@@ -10,7 +10,8 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@meos/launcher-components/*": ["../../packages/launcher-components/dist/*"]
+      "@meos/launcher-components/*": ["../../packages/launcher-components/dist/*"],
+      "@meos/launcher-core/*": ["../../packages/launcher-core/*"]
     }
   }
 }

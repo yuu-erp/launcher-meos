@@ -1,5 +1,5 @@
 {
-  "name": "@meos/launcher-core",
+  "name": "@meos/clean-architecture",
   "version": "0.1.0",
   "private": true,
   "main": "dist/index.js",
@@ -15,6 +15,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@meos/clean-architecture": "workspace:*"
+    "@metanodejs/exceptions": "^0.0.1",
+    "mitt": "^3.0.1",
+    "nanoid": "^5.1.6",
+    "ts-essentials": "^10.1.1"
   }
 }
