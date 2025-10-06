@@ -66,13 +66,13 @@ const DockLauncher = () => {
   return (
     <React.Fragment>
       <div
-        className="w-full fixed bottom-0 left-0 right-0 items-center"
+        className="w-full fixed bottom-0 left-0 right-0 items-center px-1"
         style={{
           height: `${heightDockContainer}px`,
         }}
       >
         <div
-          className="bg-[#4A4A4A]/40 backdrop-blur-2xl rounded-2xl px-1 flex-row shadow overflow-visible"
+          className="bg-[#4A4A4A]/40 max-w-full backdrop-blur-2xl rounded-2xl px-1 flex-row shadow overflow-visible"
           style={{ height: `${heightDockMain}px`, border: "1px solid rgba(255,255,255,0.1)" }}
         >
           <DndContext
@@ -99,18 +99,18 @@ const DockLauncher = () => {
             <div className="px-3 h-full justify-center">
               <span className="w-[1px] h-[80%] bg-white/50"></span>
             </div>
-            <DockItem
-              id={DOCK_DAPP[DOCK_DAPP.length - 1].id}
-              icon={DOCK_DAPP[DOCK_DAPP.length - 1].logo}
-              name={DOCK_DAPP[DOCK_DAPP.length - 1].name}
-              isOpen
-            />
-            <DockItem
-              id={DOCK_DAPP[DOCK_DAPP.length - 1].id}
-              icon={DOCK_DAPP[DOCK_DAPP.length - 1].logo}
-              name={DOCK_DAPP[DOCK_DAPP.length - 1].name}
-            />
           </DndContext>
+          <DockItem
+            id={DOCK_DAPP[DOCK_DAPP.length - 2].id}
+            icon={DOCK_DAPP[DOCK_DAPP.length - 2].logo}
+            name={DOCK_DAPP[DOCK_DAPP.length - 2].name}
+            isOpen
+          />
+          <DockItem
+            id={DOCK_DAPP[DOCK_DAPP.length - 1].id}
+            icon={DOCK_DAPP[DOCK_DAPP.length - 1].logo}
+            name={DOCK_DAPP[DOCK_DAPP.length - 1].name}
+          />
         </div>
       </div>
     </React.Fragment>
